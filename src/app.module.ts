@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module'; // Import module vừa tạo
 import { CoreModule } from './core/core.module'; // Import module vừa tạo
 import { PlaylistModule } from './playlists/playlist.module'; // Import playlist module
+import { AdminModule } from './admin/admin.module'; // Import admin module
 import { User, Video, Comment, Like, Playlist } from './entities/index';
 
 @Module({
@@ -24,6 +25,7 @@ import { User, Video, Comment, Like, Playlist } from './entities/index';
     AuthModule,
     CoreModule,
     PlaylistModule,
+    AdminModule,
   ],
 })
 export class AppModule {}
