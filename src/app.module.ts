@@ -5,7 +5,8 @@ import { AuthModule } from './auth/auth.module'; // Import module vừa tạo
 import { CoreModule } from './core/core.module'; // Import module vừa tạo
 import { PlaylistModule } from './playlists/playlist.module'; // Import playlist module
 import { AdminModule } from './admin/admin.module'; // Import admin module
-import { User, Video, Comment, Like, Playlist } from './entities/index';
+import { ChannelModule } from './channels/channel.module'; // Import channel module
+import { User, Video, Comment, Like, Playlist, Subscription } from './entities/index';
 
 @Module({
   imports: [
@@ -19,13 +20,14 @@ import { User, Video, Comment, Like, Playlist } from './entities/index';
       database: process.env.DB_NAME,
       ssl: process.env.DB_SSL === 'true',
       extra: { ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : null },
-      entities: [User, Video, Comment, Like, Playlist],
+      entities: [User, Video, Comment, Like, Playlist, Subscription],
       synchronize: true, // Tự động tạo bảng DB khi chạy
     }),
     AuthModule,
     CoreModule,
     PlaylistModule,
     AdminModule,
+    ChannelModule,
   ],
 })
 export class AppModule {}

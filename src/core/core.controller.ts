@@ -26,9 +26,24 @@ export class CoreController {
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  delete(@Param('id') id: string, @Request() req) {
-    if (req.user.role !== 'ADMIN') throw new ForbiddenException('Chỉ Admin được xóa!');
-    return this.coreService.deleteVideo(id);
+  async delete(@Param('id') id: string, @Request() req) {
+    try {
+      await this.coreService.deleteVideo(id, req.user.username, req.user.role === 'ADMIN');
+      return { success: true, message: 'Xóa video thành công' };
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('comments/:id')
+  async deleteComment(@Param('id') id: string, @Request() req) {
+    try {
+      await this.coreService.deleteComment(id, req.user.username, req.user.role === 'ADMIN');
+      return { success: true, message: 'Xóa comment thành công' };
+    } catch (error) {
+      throw new ForbiddenException(error.message);
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))

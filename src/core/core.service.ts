@@ -56,10 +56,36 @@ export class CoreService {
   }
   // -------------------
 
-  deleteVideo(id: string) { return this.videoRepo.delete(id); }
+  async deleteVideo(id: string, username: string, isAdmin: boolean) {
+    const video = await this.videoRepo.findOne({ where: { id } });
+    if (!video) {
+      throw new Error('Video không tồn tại');
+    }
+    
+    // Allow deletion if user is admin or video owner
+    if (!isAdmin && video.uploader !== username) {
+      throw new Error('Bạn không có quyền xóa video này');
+    }
+    
+    return this.videoRepo.delete(id);
+  }
 
   addComment(videoId: string, content: string, username: string) {
     return this.commentRepo.save(this.commentRepo.create({ content, username, video: { id: videoId } }));
+  }
+
+  async deleteComment(id: string, username: string, isAdmin: boolean) {
+    const comment = await this.commentRepo.findOne({ where: { id } });
+    if (!comment) {
+      throw new Error('Comment không tồn tại');
+    }
+    
+    // Allow deletion if user is admin or comment owner
+    if (!isAdmin && comment.username !== username) {
+      throw new Error('Bạn không có quyền xóa comment này');
+    }
+    
+    return this.commentRepo.delete(id);
   }
 
   async toggleLike(videoId: string, isLike: boolean, username: string) {

@@ -70,3 +70,15 @@ export class Playlist {
   
   @CreateDateColumn() createdAt: Date;
 }
+
+// 6. Subscription (Theo dõi kênh)
+@Entity()
+export class Subscription {
+  @PrimaryColumn() id: string;
+  @BeforeInsert() generateId() { if (!this.id) this.id = uuidv4(); }
+
+  @Column() subscriber: string; // Username người theo dõi
+  @Column() channel: string; // Username kênh được theo dõi
+  
+  @CreateDateColumn() createdAt: Date;
+}
